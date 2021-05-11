@@ -17,8 +17,4 @@ module.exports = {
                 });
         });
     },
-
-    EscapeMarkdownCharacters: (string) => {
-        return string.replace("_", "\_")
-    }
 };

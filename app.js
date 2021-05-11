@@ -8,7 +8,7 @@ const app = async () => {
 	};
 
 	await sputnik.LoadDao("your_dao.sputnikdao.near", bot_options, 0);
-	await sputnik.LoadDao("your_dao_2.sputnikdao.near", bot_options, 0);
+	await nearbet.LoadBets(bot_options);
 };
 
 app();

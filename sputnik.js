@@ -78,7 +78,7 @@ module.exports = {
                 msg += `. Amount ${amount}`;
             }
 
-            let url = `https://sputnik.fund/#/${api.EscapeMarkdownCharacters(contract)}/${index}`;
+            let url = `https://sputnik.fund/#/${contract}/${index}`;
             msg += '\n' + url + '\n';
 
             if (proposal.status === "Success")
@@ -87,8 +87,8 @@ module.exports = {
                 msg += "❌ Proposal Failed\n";
 
             msg += `${proposal.description}\n` +
-                `Proposer: ${api.EscapeMarkdownCharacters(proposal.proposer)}\n` +
-                `Target: ${api.EscapeMarkdownCharacters(proposal.target)}`;
+                `Proposer: <code>${proposal.proposer}</code>\n` +
+                `Target: <code>${proposal.target}</code>`;
             return msg;
         } catch (err) {
             logger.Error("FormatProposal Error: " + err);
