@@ -75,7 +75,7 @@ module.exports = {
 
                                 bet[index_message_id] = await bot.deleteMessage(bot_options.chat_id, storage_prepared[bet_account_id][index_message_id])
                                     .then(response => {
-                                        logger.Info(`Message_id ${response.message_id} removed for ${contract} / account ${bet_account_id}`);
+                                        logger.Info(`Message_id ${storage_prepared[bet_account_id][index_message_id]} removed for ${contract} / account ${bet_account_id}`);
                                         return 0;
                                     })
                                     .catch(err => {
