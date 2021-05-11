@@ -1,15 +1,21 @@
-#### Update telegram channel with live NEAR blockchain data 
+#### Update social channels with live NEAR blockchain data 
 
 Build uses: 
 * [NEAR REST API Server](https://github.com/near-examples/near-rest-api-server)
-* [Sputnik DAO contracts](https://github.com/near-daos/sputnik-dao-contract)
 * [NEAR Blockchain](https://near.org)
+* [Sputnik DAO contracts](https://github.com/near-daos/sputnik-dao-contract)
+* [NEAR Bet contracts](https://github.com/Kouprin/accounts-marketplace)
 
 #### Installation guide:
 * Clone this repo
 * Run `npm i`
-* Update `app.js` with `token` and `chat_id` from Telegram
 * Add `app.js` to the cron job
+
+Telegram:
+* Update `telegram_bot_options` object in `app.js` with `token` and `chat_id` from Telegram
+
+Twitter:
+* Update `twitter_bot_options` object in `app.js` with 4 access keys using [Dev Dashboard](https://developer.twitter.com/en) values
 
 #### FAQ:
 
