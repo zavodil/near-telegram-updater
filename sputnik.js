@@ -1,15 +1,15 @@
 const JSONdb = require('simple-json-db');
-const TelegramBot = require('node-telegram-bot-api');
 const nearApi = require('near-api-js');
 const logger = require('./logger');
 const api = require('./api');
+
 
 const FRAC_DIGITS = 5;
 
 module.exports = {
     LoadDao: async (contract, bot_options, records_skipped) => {
-        const bot = new TelegramBot(bot_options.token);
-        const db = new JSONdb(`${__dirname}/storage/${contract}.json`, );
+        console.log(`Loading ${contract} / ${bot_options.type}...`);
+        const db = new JSONdb(`${__dirname}/storage/${bot_options.type}_${contract}.json`);
 
         let request = {
             "contract": contract,
@@ -27,19 +27,23 @@ module.exports = {
 
                 let storageUpdated = false;
                 for (let index of Object.keys(data)) {
-                    if(records_skipped && index <= records_skipped)
+                    if (records_skipped && index <= records_skipped)
                         continue;
 
                     const alreadySent = Object.keys(storage).length > index && storage[index].hasOwnProperty("message_id") && (Number(storage[index].message_id) > 0);
-
                     if (!alreadySent) {
                         let proposal = data[index];
                         const text = module.exports.FormatProposal(contract, proposal, index);
                         if (!!text) {
-                            proposal.message_id = await bot.sendMessage(bot_options.chat_id, text, {parse_mode: "markdown"})
+                            proposal.message_id = await api.sendMessage(text, bot_options)
                                 .then(response => {
-                                    logger.Info(`Message_id ${response.message_id} sent for ${contract} / index ${index}`);
-                                    return response.message_id;
+                                    logger.Info(`Message sent for ${contract} / index ${index}`);
+                                    if (bot_options.type === "telegram")
+                                        return response.message_id;
+                                    else if (bot_options.type === "twitter")
+                                        return response.id;
+                                    else
+                                        logger.Error(`Unknown bot type ${bot_options.type}`);
                                 })
                                 .catch(err => {
                                     logger.Error(`Message failed index ${index}. Contract ${contract} [chat: ${bot_options.chat_id}]. Error: ${err.message}`);
@@ -50,8 +54,7 @@ module.exports = {
 
                             if (!storageUpdated)
                                 storageUpdated = true;
-                        }
-                        else{
+                        } else {
                             logger.Error(`Message generation error for ${contract} / index ${index}`);
                         }
                     }
@@ -61,18 +64,15 @@ module.exports = {
                     db.JSON({data: storage});
                     db.sync();
                 }
-                process.exit(0)
-
             })
             .catch(err => {
                 logger.Error(`RPC / REST API error for ${contract}: ${err.message}`);
-                process.exit(1);
             })
     },
 
     FormatProposal: (contract, proposal, index) => {
         try {
-            let msg = `Type: *${proposal.kind.type}*`;
+            let msg = `Type: <strong>${proposal.kind.type}</strong>`;
             if (proposal.kind.amount) {
                 const amount = nearApi.utils.format.formatNearAmount(proposal.kind.amount, FRAC_DIGITS).replace(",", "");
                 msg += `. Amount ${amount}`;

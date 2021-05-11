@@ -109,12 +109,10 @@ module.exports = {
                     db.JSON({data: storage});
                     db.sync();
                 }
-                process.exit(0)
 
             })
             .catch(err => {
                 logger.Error(`RPC / REST API error for ${contract}: ${err.message}`);
-                process.exit(1);
             })
     },
 

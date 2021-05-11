@@ -9,10 +9,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bn.js": "^5.2.0",
     "near-api-js": "^0.41.0",
     "node-fetch": "^2.6.1",
     "node-telegram-bot-api": "^0.53.0",
     "simple-json-db": "^1.2.3",
-    "simple-node-logger": "^18.12.24"
+    "simple-node-logger": "^18.12.24",
+    "twitter-lite": "^1.1.0"
   }
 }
