@@ -40,7 +40,7 @@ module.exports = {
                     let bet = data[index];
 
                     const bet_account_id = bet[index_account_id];
-                    let alreadySent = (storage_prepared.hasOwnProperty(bet_account_id)
+                    const alreadySent = (storage_prepared.hasOwnProperty(bet_account_id)
                         && Number(storage_prepared[bet_account_id][index_message_id]) > 0);
 
                     if (!alreadySent) {
@@ -74,7 +74,7 @@ module.exports = {
                                     + nearApi.utils.format.formatNearAmount(amount_difference, FRAC_DIGITS).replace(",", "") + "Ⓝ)";
 
                                 bet[index_message_id] = await bot.deleteMessage(bot_options.chat_id, storage_prepared[bet_account_id][index_message_id])
-                                    .then(response => {
+                                    .then(() => {
                                         logger.Info(`Message_id ${storage_prepared[bet_account_id][index_message_id]} removed for ${contract} / account ${bet_account_id}`);
                                         return 0;
                                     })
@@ -93,10 +93,10 @@ module.exports = {
                                         return 0;
                                     });
 
-                                if (new_message_id) {
+                                if (new_message_id)
                                     bet[index_message_id] = new_message_id;
-                                    storage[index] = bet;
-                                }
+
+                                storage[index] = bet;
 
                                 if (!storageUpdated)
                                     storageUpdated = true;

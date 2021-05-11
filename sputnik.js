@@ -30,7 +30,7 @@ module.exports = {
                     if(records_skipped && index <= records_skipped)
                         continue;
 
-                    let alreadySent = Object.keys(storage).length > index && storage[index].hasOwnProperty("message_id") && (Number(storage[index].message_id) > 0);
+                    const alreadySent = Object.keys(storage).length > index && storage[index].hasOwnProperty("message_id") && (Number(storage[index].message_id) > 0);
 
                     if (!alreadySent) {
                         let proposal = data[index];
